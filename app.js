@@ -1,9 +1,11 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 const port = 3000;
 const Router = require('./routes/index.js')
 
 app.use(express.json());
+app.use(cookieParser())
 app.use("/", Router);
 
 app.listen(port, () => {
