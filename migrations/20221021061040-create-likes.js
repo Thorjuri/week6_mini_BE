@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       id: {
         type: Sequelize.INTEGER,
@@ -15,8 +15,8 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id',
-          },
-          onDelete: 'cascade',
+        },
+        onDelete: 'cascade',
       },
       postId: {
         type: Sequelize.INTEGER,
@@ -24,23 +24,22 @@ module.exports = {
         references: {
           model: 'Posts',
           key: 'postId',
-          },
-          onDelete: 'cascade',
-
+        },
+        onDelete: 'cascade',
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.Now
+        defaultValue: Sequelize.Now,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.Now
-      }
+        defaultValue: Sequelize.Now,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Likes');
-  }
+  },
 };

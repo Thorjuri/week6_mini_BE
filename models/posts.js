@@ -1,7 +1,5 @@
 'use strict';
-const {
-  Model
-} = require('sequelize');
+const { Model } = require('sequelize');
 module.exports = (sequelize, DataTypes) => {
   class Posts extends Model {
     /**
@@ -13,49 +11,52 @@ module.exports = (sequelize, DataTypes) => {
       // define association here
     }
   }
-  Posts.init({
-    postId: {
-      allowNull: false,
-      autoIncrement: true,
-      primaryKey: true,
-      type: DataTypes.INTEGER
-    },
-    id: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: 'Users',
-        key: 'id',
+  Posts.init(
+    {
+      postId: {
+        allowNull: false,
+        autoIncrement: true,
+        primaryKey: true,
+        type: DataTypes.INTEGER,
+      },
+      id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: 'Users',
+          key: 'id',
         },
         onDelete: 'cascade',
+      },
+      nickname: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      title: {
+        type: DataTypes.STRING,
+      },
+      totalLike: {
+        type: DataTypes.INTEGER,
+        defaultValue: 0,
+      },
+      content: {
+        type: DataTypes.STRING,
+      },
+      createdAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.Now,
+      },
+      updatedAt: {
+        allowNull: false,
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.Now,
+      },
     },
-    nickname: {
-      type: DataTypes.STRING,
-      allowNull: false
-    },
-    title: {
-      type: DataTypes.STRING
-    },
-    totalLike: {
-      type: DataTypes.INTEGER,
-      defaultValue: 0
-    },
-    content: {
-      type: DataTypes.STRING
-    },
-    createdAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Now
-    },
-    updatedAt: {
-      allowNull: false,
-      type: DataTypes.DATE,
-      defaultValue: DataTypes.Now
+    {
+      sequelize,
+      modelName: 'Posts',
     }
-  }, {
-    sequelize,
-    modelName: 'Posts',
-  });
+  );
   return Posts;
 };

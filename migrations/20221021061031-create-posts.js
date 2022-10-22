@@ -7,7 +7,7 @@ module.exports = {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
-        type: Sequelize.INTEGER
+        type: Sequelize.INTEGER,
       },
       id: {
         type: Sequelize.INTEGER,
@@ -15,36 +15,36 @@ module.exports = {
         references: {
           model: 'Users',
           key: 'id',
-          },
-          onDelete: 'cascade',
+        },
+        onDelete: 'cascade',
       },
       nickname: {
         type: Sequelize.STRING,
-        allowNull: false
+        allowNull: false,
       },
       title: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       totalLike: {
         type: Sequelize.INTEGER,
-        defaultValue: 0
+        defaultValue: 0,
       },
       content: {
-        type: Sequelize.STRING
+        type: Sequelize.STRING,
       },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.Now
+        defaultValue: Sequelize.Now,
       },
       updatedAt: {
         allowNull: false,
         type: Sequelize.DATE,
-        defaultValue: Sequelize.Now
-      }
+        defaultValue: Sequelize.Now,
+      },
     });
   },
   async down(queryInterface, Sequelize) {
     await queryInterface.dropTable('Posts');
-  }
+  },
 };
