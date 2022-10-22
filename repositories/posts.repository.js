@@ -2,34 +2,37 @@ const { Posts } = require('../models');
 const { Users } = require('../models');
 
 class PostRepository {
+
+  // 게시글 전체 조회
   findAllPost = async () => {
     const posts = await Posts.findAll();
 
     return posts;
   };
 
+  // 게시글 상제 정보
   findPostById = async (postId) => {
     const post = await Posts.findByPk(postId);
 
     return post;
   };
 
-  findUserById = async (id) => {
-    const users = await Users.findByPk(id);
+  // 유저 정보 받아오기
+  findUserInfo = async (userId) =>{
+    const userInfo = await Users.findOne({ where : { userId }})
+    const nickname = userInfo.nickname
 
-    return users;
+    return {
+        id: userInfo,
+        nickname: nickname
+    };
   };
 
-  findUserByNickname = async (nickname) => {
-    const user = await Users.findByPk(nickname);
-
-    return user;
-  };
-
-
-  createPost = async (id, nickname, title, content, totaLike) => {
+  // 게시글 생성
+  createPost = async (postId, userId, nickname, title, content, totaLike) => {
     const createPostData = await Posts.create({
-      id,
+      postId,
+      userId,
       nickname,
       title,
       content,
@@ -39,19 +42,21 @@ class PostRepository {
     return createPostData;
   };
 
-  updatePost = async (id, nickname, title, content, totaLike) => {
+  // 게시글 수정
+  updatePost = async (posdId, userId, nickname, title, content) => {
     const updatePostData = await Posts.update(
       { title, content },
-      { where: { id, nickname } }
+      { where: { posdId, userId, nickname } }
     );
 
     return updatePostData;
   };
 
-  deletePost = async (id) => {
-    const updatePostData = await Posts.destroy({ where: { id } });
+  // 게시글 삭제
+  deletePost = async (postId, userId) => {
+    const deletePostData = await Posts.destroy({ where: { postId, userId } });
 
-    return updatePostData;
+    return deletePostData;
   };
 
 };
