@@ -36,13 +36,13 @@ class UserService {
          
         try {
             if (!loginData){
-                throw new Error ('일치하는 회원정보가 없습니다. 아이디 및 비밀번호를 확인해주세요')
+                throw new Error ('일치하는 회원정보가 없습니다. 아이디 및 비밀번호를 확인해주세요') //예외처리3. 일치 정보 없음
             }
 
             const token = jwt.sign({ userId: loginData.userId }, "access-secret-key");
             return {token:token, message: '로그인 성공'};
         }catch (error) {
-            return {message: `로그인 실패: ${error.message}`}
+            return {message: `로그인 실패: ${error.message}`}  //예외처리4. DB 접근 혹은 jwt 발행 실패 
         }
     };
 
