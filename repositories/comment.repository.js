@@ -2,7 +2,7 @@ const { Comments } = require('../models'); // DB영역에서는 꼭 필요한 �
 
 class CommentRepository {
   // 댓글 조회
-  findAllComment = async ({ postId }) => {
+  findAllComment = async ( postId ) => {
     const allComment = await Comments.findAll({
       where: { postId },
       attributes: { exclude: ['postId'] },
@@ -12,7 +12,7 @@ class CommentRepository {
     return allComment;
   };
   // 댓글 생성
-  createCmt = async ({ comment, postId, id, nickname }) => {
+  createCmt = async ( comment, postId, id, nickname ) => {
     const createCommentData = await Comments.create({
       comment,
       postId,

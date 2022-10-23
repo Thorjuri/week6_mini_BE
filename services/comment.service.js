@@ -17,12 +17,12 @@ class CommentService {
     });
   };
   // 댓글 생성
-  createCmt = async (comment, postId, id, nickname) => {
+  createCmt = async ( comment, postId, id, nickname ) => {
     const createCommentData = await this.commentRepository.createCmt(
       comment,
       postId,
       id,
-      nickname
+      nickname,
     );
 
     return {
