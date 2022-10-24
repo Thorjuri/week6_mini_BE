@@ -9,7 +9,7 @@ module.exports = (req, res, next) => {
       res.status(401).send({
         errorMessage: "11로그인 후 이용 가능한 기능입니다.",
       });
-      return;
+      return ;   
     }
   
     try {
