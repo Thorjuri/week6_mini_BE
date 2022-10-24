@@ -18,7 +18,7 @@ class UserController {
         const { userId, password } = req.body;  
         const loginData = await this.userService.login(authorization, userId, password);
         // res.cookie(loginData.token)s
-        res.cookie('Authorization',loginData.token)
+        res.header('Authorization',loginData.token)
         res.send(loginData.message)
     };
 
