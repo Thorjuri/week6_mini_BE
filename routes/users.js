@@ -8,16 +8,24 @@ const authMiddleware = require("../middlewares/auth_middleware");
 const user_validation = require('../validation/user_validation')
 
 
-// 1.회원가입 (Joi validation)
-router.post('/signup', user_validation.user_singup, userController.createUser);
+// 1.회원가입 
+router.post('/signup', userController.createUser);
 
+// 2. 회원가입 - 아이디 중복확인
+router.post('/checkId', userController.duplicatedId);
 
-//2.로그인(토큰 발급)
+// 3. 회원가입 - 닉네임 중복확인
+router.post('/checkname', userController.duplicatedNickname);
+
+//4.로그인(토큰 발급)
 router.post('/login' ,userController.login);
 
+// 5. 마이페이지 (내 정보, 좋아요한 글)
+router.get('/:userId', authMiddleware, userController.getUser);
 
-// 3. 마이페이지 (내 정보, 좋아요한 글)
-router.get('/:userId', authMiddleware, userController.getUser)
+// 6. 유저 프로필 수정
+router.put('/:userId/update', authMiddleware, userController.updateUser);
+
 
 
 module.exports = router;
