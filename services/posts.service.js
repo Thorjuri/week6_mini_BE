@@ -27,8 +27,9 @@ class PostService {
 
   // 게시글 상세조회
   findPostById = async (postId) => {
+    console.log(postId)
     const findPost = await this.postRepository.findPostById(postId);
-
+    console.log(findPost)
     return {
       postId: findPost.postId,
       id: findPost.id,
@@ -42,9 +43,9 @@ class PostService {
   };
 
   // 게시글 생성
-  createPost = async (userId, nickname,title, content) => {
+  createPost = async (id, nickname,title, content) => {
     const createPostData = await this.postRepository.createPost(
-      userId,
+      id,
       nickname,
       title,
       content
@@ -64,18 +65,17 @@ class PostService {
 
 
   // 게시글 수정
-  updatePost = async (userId, nickname, title, content) => {
+  updatePost = async (postId, nickname, title, content) => {
     const findPost = await this.postRepository.findPostById(postId);
-    const findUser = await this.postRepository.findUserInfo(userId);
-    
-    if( postId === findPost.postId && userId === findUser.userId){
-    await this.postRepository.updatePost(id, nickname, title, content);
+
+    if(!findPost){ return {data : '게시글이 존재하지 않습니다'}}
+    if( nickname === findPost.nickname){
+    await this.postRepository.updatePost(postId, nickname, title, content);
     
     const updatePost = await this.postRepository.findPostById(postId);
 
     return {
       postId: updatePost.postId,
-      id: updatePost.id,
       nickname: updatePost.nickname,
       title: updatePost.title,
       content: updatePost.content,
@@ -89,29 +89,20 @@ class PostService {
   };
 
   // 게시글 삭제
-  deletePost = async (id) => {
+  deletePost = async (postId, nickname) => {
     const findPost = await this.postRepository.findPostById(postId);
-    if( id === findPost.id){
+    if( nickname === findPost.nickname){
 
-    await this.postRepository.deletePost(id);
+    await this.postRepository.deletePost(postId, nickname);
 
-    return {
-      postId: findPost.postId,
-      id: findPost.id,
-      nickname: findPost.nickname,
-      title: findPost.title,
-      content: findPost.content,
-      totaLike:findPost.totaLikes,
-      createdAt: findPost.createdAt,
-      updatedAt: findPost.updatedAt,
-    };
+    return { message : '게시글이 삭제되었습니다.'}   ;
     }else{
       throw new Error("삭제 권한이 없습니다.");
     }
   };
 
   getLikePosts = async ({ id }) => {
-    const getLikePostsAll = await this.postRepository.getLikePosts({id})
+    const getLikePostsAll = await this.postRepository.getLikePosts({ id})
    
     if (getLikePostsAll) {
         getLikePostsAll.sort((a, b) => {

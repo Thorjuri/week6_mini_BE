@@ -15,8 +15,9 @@ class PostRepository {
 
   // 게시글 상제 정보
   findPostById = async (postId) => {
-    const post = await Posts.findByPk(postId);
-
+    console.log(postId)
+    const post = await Posts.findOne({ where : { postId}});
+    console.log(post)
     return post;
   };
 
@@ -32,32 +33,30 @@ class PostRepository {
   };
 
   // 게시글 생성
-  createPost = async (postId, userId, nickname, title, content, totaLike) => {
+  createPost = async (id, nickname, title, content) => {
     const createPostData = await Posts.create({
-      postId,
-      userId,
+      id,
       nickname,
       title,
-      content,
-      totaLike
+      content
     });
 
     return createPostData;
   };
 
   // 게시글 수정
-  updatePost = async (posdId, userId, nickname, title, content) => {
+  updatePost = async (postId, nickname, title, content) => {
     const updatePostData = await Posts.update(
       { title, content },
-      { where: { posdId, userId, nickname } }
+      { where: { postId, nickname } }
     );
 
     return updatePostData;
   };
 
   // 게시글 삭제
-  deletePost = async (postId, userId) => {
-    const deletePostData = await Posts.destroy({ where: { postId, userId } });
+  deletePost = async (postId, nickname) => {
+    const deletePostData = await Posts.destroy({ where: { postId, nickname } });
 
     return deletePostData;
   };

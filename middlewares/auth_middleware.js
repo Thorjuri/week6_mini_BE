@@ -1,5 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
+require('dotenv').config()
+
 
 // 미들웨어 - 사용자인증 (sequelize 변경)
 module.exports = (req, res, next) => {
@@ -14,13 +16,12 @@ module.exports = (req, res, next) => {
     }
   
     try {
-      const { userId } = jwt.verify(authToken, "access-secret-key");
+      const {userId}  = jwt.verify(authToken, process.env.SECRET_KEY);
       //mongoose에서sequelize 로 바꿨을때 변경된부분. pk 기본키 사용
-      Users.findAll({
+      Users.findOne({
         where: {userId:userId}
       }).then((user) => {
         res.locals.user = user;
-        console.log("성공")
         next();
       });
     } catch (err) {

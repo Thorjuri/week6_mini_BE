@@ -10,7 +10,7 @@ class PostsController {
     try{
       const posts = await this.postService.findAllPost();
       res.status(200).json({ data: posts });
-    }catch{
+    }catch (error){
       res.status(404).json({error: error.message})
     }
   };
@@ -18,11 +18,12 @@ class PostsController {
   // 게시글 상세조회
   getPostById = async (req, res) => {
     const { postId } = req.params;
+    console.log(postId)
     
     try{
     const post = await this.postService.findPostById(postId);
     res.status(200).json({ data: post });
-    }catch{
+    }catch (error){
       res.status(404).json({error: error.message})
     }
     
@@ -30,7 +31,8 @@ class PostsController {
   
   // 게시글 작성
   createPost = async (req, res) => {
-    const {id, nickname} = res.locals.Users;
+    const {id, nickname} = res.locals.user;
+    console.log(id, nickname)
     const {title, content} = req.body;
 
     try{
@@ -41,7 +43,7 @@ class PostsController {
       content
     );
     res.status(201).json({ data: createPostData });
-  }catch{
+  }catch(error){
     res.status(404).json({error: error.message});
   }
     
@@ -50,20 +52,15 @@ class PostsController {
 
   // 게시글 수정
   updatePost = async (req, res) => {
-    const { id, nickname } = res.locals.Users;
+    const { nickname } = res.locals.user;
     const { title, content } = req.body;
-    const { postId } = req.params.postId;
+    const { postId } = req.params;
+
 
     try{
-    const updatePost = await this.postService.updatePost(
-      id,
-      nickname,
-      title,
-      content,
-      postId
-    );
-    res.status(200).json({ data: updatePost });
-    }catch{
+    const updatePost = await this.postService.updatePost(postId, nickname, title, content)
+    res.status(200).json(updatePost);
+    }catch (error){
       res.status(404).json({error: error.message});
     }
     
@@ -72,16 +69,13 @@ class PostsController {
 
   //게시글 삭제
   deletePost = async (req, res) => {
-    const { id } = res.locals.Users;
-    const { postId } = req.params.postId;
+    const { nickname } = res.locals.user;
+    const { postId } = req.params;
 
     try{
-    const deletePost = await this.postService.deletePost(
-      id,
-      postId
-      );
+    const deletePost = await this.postService.deletePost(postId, nickname)
     res.status(200).json({ data: deletePost });
-    }catch{
+    }catch(error){
       res.status(404).json({error: error.message});
     }
    
@@ -90,24 +84,24 @@ class PostsController {
 
 
   getLikePosts = async (req, res, next) => {
-    const { id } = res.locals.Users;
+    const { id } = res.locals.user;
     try{
         const getLikePostsAll = await this.postService.getLikePosts({id})
         res.status(200).json({data: getLikePostsAll})
     } catch(err) {
-        res.status(404).json({error: error.message})
+        res.status(404).json({error: err.message})
     }
 }
 
 putLike = async (req, res, next) => {
     const { postId } = req.params;
-    const { id } = res.locals.Users;
+    const { id } = res.locals.user;
 
     try{
         const LikePost = await this.postService.putLike({postId, id})
         res.status(200).json(LikePost)
-    } catch (error) {
-        res.status(400).json({error: error.message})
+    } catch (err) {
+        res.status(400).json({error: err.message})
     }
 }
 }

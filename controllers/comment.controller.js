@@ -23,6 +23,7 @@ class CommentController {
   createComment = async (req, res, next) => {
     const { postId } = req.params;
     const { id, nickname } = res.locals.user;
+    console.log(id, nickname)
        
     try {
       const { comment } = await commentSchema.validateAsync(req.body);
