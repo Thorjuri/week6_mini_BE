@@ -1,29 +1,6 @@
-const jwt = require('jsonwebtoken');
-const { Users } = require('../models');
 
-// module.exports = (req, res, next) => {
-//     const { authorization } = req.headers;
-//     const [tokenType, tokenValue] = (authorization || '').split(' ');
-
-//     if (!tokenValue || tokenType !== 'Bearer') {
-//         res.status(401).send({
-//             errorMessage: '로그인 후 이용 가능한 기능입니다.',
-//         });
-//         return;
-//     }
-
-//     try {
-//         const { userId } = jwt.verify(tokenValue, 'my-secret-key');
-//         Users.findByPk(userId).then((user) => { // int인 id라면 findByPk 쌉가능. 하지만 str인 userId라면?????  
-//             res.locals.user = user;
-//             next();
-//         });
-//     } catch (err) {
-//         res.status(401).send({
-//             errorMessage: '로그인 후 이용 가능한 기능입니다.',
-//         });
-//     }
-// };
+const jwt = require("jsonwebtoken");
+const { Users } = require("../models");
 
 module.exports = (req, res, next) => {
     const {authorization}  = req.headers;
@@ -31,14 +8,15 @@ module.exports = (req, res, next) => {
 
     if (!authToken || authType !== "Bearer") {
       res.status(401).send({
-        errorMessage: "로그인 후 이용 가능한 기능입니다.(1)",
+        errorMessage: "11로그인 후 이용 가능한 기능입니다.",
       });
       return;
     }
   
     try {
-      const { userId } = jwt.verify(authToken, "my-secret-key");
-      Users.findOne({
+      const { userId } = jwt.verify(authToken, "access-secret-key");
+      //mongoose에서sequelize 로 바꿨을때 변경된부분. pk 기본키 사용
+      Users.findAll({
         where: {userId:userId}
       }).then((user) => {
         res.locals.user = user;
@@ -47,8 +25,7 @@ module.exports = (req, res, next) => {
       });
     } catch (err) {
       res.status(401).send({
-        errorMessage: "로그인 후 이용 가능한 기능입니다.(2)",
+        errorMessage: "22로그인 후 이용 가능한 기능입니다.",
       });
     }
   };
-

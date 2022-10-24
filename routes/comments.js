@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middlewares/auth-middleware'); // 추가한 부분
+const authMiddleware = require('../middlewares/auth-middleware');
 
 const CommentController = require('../controllers/comment.controller');
 const commentController = new CommentController();

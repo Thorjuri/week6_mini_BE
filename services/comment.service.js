@@ -37,6 +37,7 @@ class CommentService {
   //댓글 수정
   updateCmt = async (comment, commentId, id) => {
     const FindCmt = await this.commentRepository.findCmtById(commentId);
+    if (!FindCmt) throw new Error("댓글이 존재하지 않았습니다.");
 
     if (id === FindCmt.id) {
       await this.commentRepository.updateCmt(comment, commentId, id);
@@ -49,6 +50,7 @@ class CommentService {
   // 댓글 삭제
   deleteCmt = async (commentId, id) => {
     const FindCmt = await this.commentRepository.findCmtById(commentId);
+    if (!FindCmt) throw new Error("댓글이 존재하지 않았습니다.");
 
     if (id === FindCmt.id) {
       await this.commentRepository.deleteCmt(commentId, id);

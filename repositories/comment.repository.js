@@ -8,9 +8,9 @@ class CommentRepository {
       attributes: { exclude: ['postId'] },
       order: [['createdAt', 'DESC']],
     });
-
     return allComment;
   };
+
   // 댓글 생성
   createCmt = async ( comment, postId, id, nickname ) => {
     const createCommentData = await Comments.create({
@@ -19,9 +19,9 @@ class CommentRepository {
       id,
       nickname,
     });
-
     return createCommentData;
   };
+
   // 댓글 수정
   updateCmt = async (comment, commentId, id) => {
     const updateCommentData = await Comments.update(
@@ -30,6 +30,7 @@ class CommentRepository {
     );
     return updateCommentData;
   };
+
   // 댓글 삭제
   deleteCmt = async (commentId, id) => {
     const deleteCommentData = await Comments.destroy({

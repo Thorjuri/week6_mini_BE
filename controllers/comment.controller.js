@@ -7,7 +7,7 @@ const commentSchema = Joi.object({
 class CommentController {
   commentService = new CommentService();
 
-  // 댓글 조회 "요청" (특정 게시글)
+  // 댓글 조회 (특정 게시글)
   getComments = async (req, res, next) => {
     const { postId } = req.params;
     
@@ -19,12 +19,11 @@ class CommentController {
     }
   };
 
-  // 댓글 생성 "요청"
+  // 댓글 생성
   createComment = async (req, res, next) => {
     const { postId } = req.params;
     const { id, nickname } = res.locals.user;
-    
-    
+       
     try {
       const { comment } = await commentSchema.validateAsync(req.body);
       
@@ -32,7 +31,7 @@ class CommentController {
         comment, 
         postId,
         id,
-        nickname,            
+        nickname,   
       );
       res.status(201).json({ data: createCommentData });
     } catch (error) {
