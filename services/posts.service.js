@@ -1,27 +1,31 @@
-const PostsRepository = require('../services/posts.service')
+const PostsRepository = require('../repositories/posts.repository')
 
 class PostsService {
 
     postsRepository = new PostsRepository();
 
-    getLikePosts = async ({id}) => {
+    getLikePosts = async ({ id }) => {
         const getLikePostsAll = await this.postsRepository.getLikePosts({id})
        
-        getLikePostsAll.sort((a, b) => {
-            return b.totalLikes - a.totalLikes;
-        })
+        if (getLikePostsAll) {
+            getLikePostsAll.sort((a, b) => {
+                return b.totalLike - a.totalLike;
+            })
 
-        return getLikePostsAll.map((post) => {
-            return {
-                postId: post.postId,
-                id: post.id,
-                nickname: post.nickname,
-                title: post.title,
-                totalLikes :post.totalLikes,
-                createdAt: post.createdAt,
-                updatedAt: post.updatedAt,
-            }
-        })   
+            return getLikePostsAll.map((post) => {
+                return {
+                    postId: post.postId,
+                    id: post.id,
+                    nickname: post.nickname,
+                    title: post.title,
+                    totalLike :post.totalLike,
+                    createdAt: post.createdAt,
+                    updatedAt: post.updatedAt,
+                }
+            })   
+        } else {
+            throw new Error ('좋아요를 누른 게시글이 존재 하지않습니다.')
+        }
     }
 
     putLike = async({postId, id}) => {

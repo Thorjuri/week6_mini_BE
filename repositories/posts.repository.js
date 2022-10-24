@@ -10,13 +10,13 @@ class PostsRepository {
             attributes: ['postId'],
         });
 
-        const postLikeNumber = getLikeAll.map((post) => {
+        const likePostId = getLikeAll.map((post) => {
             return post.getDataValue('postId')});
 
-        console.log(postLikeNumber);
+        console.log(likePostId);
 
         const getLikePostsAll = await Posts.findAll({
-            where: { postId: postLikeNumber },
+            where: { postId: likePostId },
         });
 
         return getLikePostsAll;
