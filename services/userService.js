@@ -41,7 +41,7 @@ class UserService {
             }
 
             const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
-            return {token:token, message: '로그인 성공'};
+            return {token:`Bearer ${token}`, message: '로그인 성공'};
         }catch (error) {
             return {message: `로그인 실패: ${error.message}`}  //예외처리4. DB 접근 혹은 jwt 발행 실패 
         }
