@@ -1,7 +1,6 @@
 {
   "name": "week6_mini_blog",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -27,6 +26,8 @@
   },
   "devDependencies": {
     "joi": "^17.6.3",
+    "nodemon": "^2.0.20",
     "prettier": "^2.7.1"
-  }
+  },
+  "description": ""
 }

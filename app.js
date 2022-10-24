@@ -1,3 +1,4 @@
+const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 const port = 3000;
@@ -5,6 +6,7 @@ const Router = require('./routes/index.js')
 const cookieParser = require('cookie-parser');
 
 app.use(express.json());
+app.use(cookieParser())
 app.use("/", Router);
 app.use(cookieParser())
 
