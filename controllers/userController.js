@@ -13,13 +13,26 @@ class UserController {
         res.status(201).send(createUserData);
     };
 
+
+    duplicatedId = async(req, res, next)=> {
+        const {userId} = req.body;
+        const duplicatedIdData = await this.userService.duplicatedId(userId);
+        res.status(201).send(duplicatedIdData);
+    };
+
+    duplicatedNickname = async(req, res, next)=> {
+        const {nickname} = req.body;
+        const duplicatedNicknameData = await this.userService.duplicatedNickname(nickname);
+        res.status(201).send(duplicatedNicknameData);
+    };
+
     login = async(req, res, next)=> {
         const { authorization } = req.headers;
         const { userId, password } = req.body;  
         const loginData = await this.userService.login(authorization, userId, password);
         // res.cookie(loginData.token)s
         res.header('Authorization',loginData.token)
-        res.send(loginData.message)
+        res.status(201).send(loginData.message)
     };
 
 
@@ -27,6 +40,13 @@ class UserController {
         const {userId} = req.params
         const getUserData = await this.userService.getUser(userId);
         res.status(201).send(getUserData);
+    };
+
+    updateUser = async(req, res, next)=> {
+        const {userId} = req.params
+        const {nickname, statusText} = req.body;
+        const updateUserData = await this.userService.updateUser(userId, nickname, statusText);
+        res.status(201).send(updateUserData);
     };
 };
 

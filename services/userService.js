@@ -19,8 +19,23 @@ class UserService {
         const excptLoginResult = await this.excptLogin(authorization); //예외처리1. 이미 로그인 된 상태
         if (excptLoginResult) { return excptLoginResult };
         const createUserData = await this.userRepository.createUser(userId, nickname, password);
-
         return createUserData;
+    };
+
+    duplicatedId = async(userId)=> {
+        if(!userId){
+            return {error: "아이디를 입력하세요"} //예외처리. 공란
+        };
+        const duplicatedIdData = await this.userRepository.duplicatedId(userId);
+        return duplicatedIdData;
+    };
+
+    duplicatedNickname = async(nickname)=> {
+        if(!nickname){
+            return {error: "닉네임을 입력하세요"} //예외처리. 공란
+        };
+        const duplicatedNicknameData = await this.userRepository.duplicatedNickname(nickname);
+        return duplicatedNicknameData;
     };
 
 
@@ -28,18 +43,15 @@ class UserService {
         const excptLoginResult = await this.excptLogin(authorization); //예외처리1. 이미 로그인 된 상태
         if (excptLoginResult) { return excptLoginResult };
 
-        if(!userId || !password){  //예외처리2. 아이디 혹 비밀번호 공란
+        if(!userId || !password){  //예외처리2. 아이디 또는 비밀번호 공란
             return { message : '아이디와 비밀번호를 모두 입력하세요.'};
         };
-
         const loginData = await this.userRepository.login(userId, password);
 
-         
         try {
             if (!loginData){
                 throw new Error ('일치하는 회원정보가 없습니다. 아이디 및 비밀번호를 확인해주세요') //예외처리3. 일치 정보 없음
             }
-
             const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
             return {token:`Bearer ${token}`, message: '로그인 성공'};
         }catch (error) {
@@ -57,9 +69,18 @@ class UserService {
             if(a.postId < b.postId) return 1;
             return 0;
         });
-
         return {userInfo: getUserData.userInfo, posts: postSort};
     };
+
+
+    updateUser = async(userId, nickname, statusText)=> {
+        if(!nickname || !statusText){
+            return {error: "수정할 내용을 입력하세요"}  //예외처리. 공란
+        };
+        const updateUserData = await this.userRepository.updateUser(userId, nickname, statusText);
+        return updateUserData;
+    };
+
 };
 
 module.exports = UserService;
