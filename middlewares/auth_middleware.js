@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const { Users } = require("../models");
 
+// 미들웨어 - 사용자인증 (sequelize 변경)
 module.exports = (req, res, next) => {
     const {authorization}  = req.headers;
     const [authType, authToken] = (authorization || "").split(" ");
@@ -28,3 +29,4 @@ module.exports = (req, res, next) => {
       });
     }
   };
+  
