@@ -15,6 +15,8 @@ app.use(cors({
   origin: '*', // 모든 출처 허용 옵션. true 를 써도 된다.
 }));
 
+app.options('*', cors())
+
 
 app.listen(port, () => {
   console.log(port, '포트로 서버가 열렸어요!');
