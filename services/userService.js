@@ -8,79 +8,117 @@ class UserService {
     userRepository = new UserRepository();
 
     excptLogin = async(authorization)=> {
-        // const { authorization } = req.headers;
         const [authToken] = (authorization || "").split(" ");
-        if(authToken){
-            return {message : '이미 로그인 되어 있습니다.'};
-        };
+        return authToken
       };
 
+
     createUser = async(authorization, userId, nickname, password) => {
-        const excptLoginResult = await this.excptLogin(authorization); //예외처리1. 이미 로그인 된 상태
-        if (excptLoginResult) { return excptLoginResult };
-        const createUserData = await this.userRepository.createUser(userId, nickname, password);
-        return createUserData;
+        try{
+            const status = await this.excptLogin(authorization); 
+                if(status){ throw new Error('이미 로그인 되어 있습니다.')}; //예외처리. 이미 로그인 된 상태
+                
+                if(!userId || !nickname || !password){ throw new Error('필수 정보를 모두 입력해주세요')};  //예외처리. 공란
+
+            const createUserData = await this.userRepository.createUser(userId, nickname, password);
+
+            return createUserData;
+
+        } catch (error) {
+            return {error: error.message}
+        };
     };
+
 
     duplicatedId = async(userId)=> {
-        if(!userId){
-            return {error: "아이디를 입력하세요"} //예외처리. 공란
+        try {
+            if(!userId){ throw new Error ("아이디를 입력하세요")}; //예외처리. 공란
+
+            const duplicatedIdData = await this.userRepository.duplicatedId(userId);
+            if(duplicatedIdData){ throw new Error ('중복된 아이디 입니다.')}; //예외처리. 중복
+
+            return {message : "사용가능한 아이디 입니다"}
+
+        }catch(error){
+            return{error: error.message}
         };
-        const duplicatedIdData = await this.userRepository.duplicatedId(userId);
-        return duplicatedIdData;
     };
 
+
     duplicatedNickname = async(nickname)=> {
-        if(!nickname){
-            return {error: "닉네임을 입력하세요"} //예외처리. 공란
+        try{
+            if(!nickname){ throw new Error ("닉네임을 입력하세요")}; //예외처리. 공란
+
+            const duplicatedNicknameData = await this.userRepository.duplicatedNickname(nickname);
+            if(duplicatedNicknameData){ throw new Error ('중복된 닉네임 입니다.')};  //예외처리. 공란
+            
+            return {message : "사용가능한 닉네임 입니다"}
+
+        }catch(error){
+            return {error: error.message}
         };
-        const duplicatedNicknameData = await this.userRepository.duplicatedNickname(nickname);
-        return duplicatedNicknameData;
     };
 
 
     login = async(authorization, userId, password)=> {
-        const excptLoginResult = await this.excptLogin(authorization); //예외처리1. 이미 로그인 된 상태
-        if (excptLoginResult) { return excptLoginResult };
+        try{
+            const status = await this.excptLogin(authorization); 
+                if(status){ throw new Error('이미 로그인 되어 있습니다.')};  //예외처리. 이미 로그인 된 상태
 
-        if(!userId || !password){  //예외처리2. 아이디 또는 비밀번호 공란
-            return { message : '아이디와 비밀번호를 모두 입력하세요.'};
-        };
-        const loginData = await this.userRepository.login(userId, password);
+                if(!userId || !password){ throw new Error('아이디와 비밀번호를 모두 입력하세요.')};  //예외처리. 공란
 
-        try {
-            if (!loginData){
-                throw new Error ('일치하는 회원정보가 없습니다. 아이디 및 비밀번호를 확인해주세요') //예외처리3. 일치 정보 없음
-            }
+            const loginData = await this.userRepository.login(userId, password);
+                if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음
+
             const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
-            return {token:`Bearer ${token}`, message: '로그인 성공'};
+            return {token:`Bearer ${ token }`, message: '로그인 성공'};  //토큰 발행
+
         }catch (error) {
-            return {message: `로그인 실패: ${error.message}`}  //예외처리4. DB 접근 혹은 jwt 발행 실패 
-        }
+            return {message: error.message};   
+        };
     };
 
 
-    getUser = async(userId) => {
-        const getUserData = await this.userRepository.getUser(userId);
-        const posts = getUserData.posts; 
+    getUserPage = async(userId) => {
+        try{
+            const user = await this.userRepository.getUserById(userId)
+                
+            if(!user) {throw new Error ('존재하지 않는 사용자입니다.')}  //예외처리. 불일치
 
-        const postSort = posts.sort((a,b) => {
-            if(a.postId > b.postId) return -1;
-            if(a.postId < b.postId) return 1;
-            return 0;
-        });
-        return {userInfo: getUserData.userInfo, posts: postSort};
+            const nickname = user.nickname
+            const getUserPageData = await this.userRepository.getUserPage(nickname);
+
+            const posts = getUserPageData.posts;
+            const postSort = posts.sort((a,b) => {  //게시글 내림차순 정렬
+                if(a.postId > b.postId) return -1;
+                if(a.postId < b.postId) return 1;
+                return 0;
+             });
+
+            return {userInfo: user, posts: postSort};
+
+        }catch(error){ 
+            return {error: error.message};
+        };
+        
     };
 
 
     updateUser = async(userId, nickname, statusText)=> {
-        if(!nickname || !statusText){
-            return {error: "수정할 내용을 입력하세요"}  //예외처리. 공란
-        };
-        const updateUserData = await this.userRepository.updateUser(userId, nickname, statusText);
-        return updateUserData;
-    };
+        try {
+            const user = await this.userRepository.getUserById(userId)
+            if(!user) {throw new Error ('존재하지 않는 사용자입니다.')} //예외처리. 불일치
 
-};
+            if(!nickname || !statusText){throw new Error ("수정할 내용을 입력하세요")};  //예외처리. 공란
+            
+            const updateUserData = await this.userRepository.updateUser(userId, nickname, statusText);
+
+            return updateUserData;
+
+        } catch(error){
+            return {error: error.message}
+        };
+    };
+}
 
 module.exports = UserService;
