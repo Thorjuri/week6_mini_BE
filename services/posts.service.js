@@ -20,7 +20,7 @@ class PostService {
         title: post.title,
         createdAt: post.createdAt,
         updatedAt: post.updatedAt,
-        totaLike: post.totaLikes
+        totalLike: post.totalLike
       };
     });
   };
@@ -36,7 +36,7 @@ class PostService {
       nickname: findPost.nickname,
       title: findPost.title,
       content: findPost.content,
-      totaLike:findPost.totaLikes,
+      totalLike:findPost.totalLike,
       createdAt: findPost.createdAt,
       updatedAt: findPost.updatedAt,
     };
@@ -57,7 +57,7 @@ class PostService {
       nickname: createPostData.nickname,
       title: createPostData.title,
       content: createPostData.content,
-      totaLike:createPostData.totaLikes,
+      totalLike:createPostData.totalLike,
       createdAt: createPostData.createdAt,
       updatedAt: createPostData.updatedAt,
     };
@@ -79,7 +79,7 @@ class PostService {
       nickname: updatePost.nickname,
       title: updatePost.title,
       content: updatePost.content,
-      totaLike:updatePost.totaLikes,
+      totalLike:updatePost.totalLike,
       createdAt: updatePost.createdAt,
       updatedAt: updatePost.updatedAt,
     };
