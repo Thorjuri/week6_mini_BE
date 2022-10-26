@@ -56,7 +56,7 @@ class UserService {
 
         const loginData = await this.userRepository.login(userId, password);
         
-        if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음
+        if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음.
 
         const token = jwt.sign({ userId: loginData.userId, nickname: loginData.nickname }, process.env.SECRET_KEY);
         
