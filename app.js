@@ -14,6 +14,8 @@ app.use(cors({
   exposedHeaders: "Authorization"
 }));
 
+app.options('*', cors())
+
 
 
 

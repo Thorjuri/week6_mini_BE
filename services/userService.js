@@ -1,7 +1,7 @@
 const UserRepository = require('../repositories/userRepository');
 const jwt = require("jsonwebtoken");
 require('dotenv').config()
-
+const upload = require('../middlewares/upload_image.js')
 
 class UserService {
 
@@ -13,13 +13,14 @@ class UserService {
       };
 
 
-    createUser = async(authorization, userId, nickname, password) => {
+    createUser = async(authorization, image, userId, nickname, password) => {
         const status = await this.excptLogin(authorization); 
             
         if(status){ throw new Error('이미 로그인 되어 있습니다.')}; //예외처리. 이미 로그인 된 상태
         if(!userId || !nickname || !password){ throw new Error('필수 정보를 모두 입력해주세요')};  //예외처리. 공란
 
-        const createUserData = await this.userRepository.createUser(userId, nickname, password);
+
+        const createUserData = await this.userRepository.createUser(userId, image, nickname, password);
 
         return createUserData;
     };
@@ -57,7 +58,7 @@ class UserService {
         
         if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음
 
-        const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
+        const token = jwt.sign({ userId: loginData.userId, nickname: loginData.nickname }, process.env.SECRET_KEY);
         
         return {token:`Bearer ${ token }`, message: '로그인 성공'};  //토큰 발행
     };

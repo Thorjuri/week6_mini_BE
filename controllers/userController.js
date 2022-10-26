@@ -4,12 +4,14 @@ class UserController {
     userService = new UserService();
 
 
-    createUser = async(req, res, next)=> {
+    createUser = async(req, res, next) => {
         const { authorization } = req.headers;
-        const {userId, nickname, password} = req.body;
+        const { userId, nickname, password } = req.body;
+        const image = req.file.location
+
         try{
-            const createUserData = await this.userService.createUser(authorization, userId, nickname, password);
-            res.status(200).send(createUserData);
+            const createUserData = await this.userService.createUser(authorization, image, userId, nickname, password);
+            res.status(201).send(createUserData);
         }catch(error){
             res.status(400).json({error: error.message})
         }
