@@ -22,6 +22,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false
       },
+      image: {
+        type: Sequelize.STRING,
+        allowNull: true
+      },
       title: {
         type: Sequelize.STRING
       },

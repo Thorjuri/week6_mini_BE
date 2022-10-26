@@ -32,8 +32,8 @@ class PostsController {
   // 게시글 작성
   createPost = async (req, res) => {
     const {id, nickname} = res.locals.user;
-    console.log(id, nickname)
-    const {title, content} = req.body;
+    const { title, content } = req.body;
+
 
     try{
     const createPostData = await this.postService.createPost(
