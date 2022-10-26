@@ -16,9 +16,8 @@ module.exports = (req, res, next) => {
     }
   
     try {
-      const {userId}  = jwt.verify(authToken, process.env.SECRET_KEY);
-      console.log(authToken, process.env.SECRET_KEY)
-      //mongoose에서sequelize 로 바꿨을때 변경된부분. pk 기본키 사용
+      const { userId, nickname }  = jwt.verify(authToken, process.env.SECRET_KEY);
+      
       Users.findOne({
         where: {userId:userId}
       }).then((user) => {

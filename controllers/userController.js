@@ -47,7 +47,7 @@ class UserController {
         try{
             const loginData = await this.userService.login(authorization, userId, password);
             res.header('Authorization',loginData.token)
-            res.status(201).send(loginData.message)
+            res.status(200).json({userId: loginData.userId, nickname: loginData.nickname, message: loginData.message})
         }catch(error){
             res.status(400).json({error: error.message})
         };
