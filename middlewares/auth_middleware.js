@@ -13,7 +13,7 @@ module.exports = (req, res, next) => {
         errorMessage: "로그인 후 이용 가능한 기능입니다.",
       });
       return;
-    }
+    };
   
     try {
       const {userId}  = jwt.verify(authToken, process.env.SECRET_KEY);
