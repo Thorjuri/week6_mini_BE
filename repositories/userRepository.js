@@ -23,8 +23,8 @@ class UserRepository {
         return existNickname;        
     };
 
-    createUser = async(userId, nickname, password) =>{
-        const result = await Users.create({ userId, nickname, password });
+    createUser = async(userId, image, nickname, password) =>{
+        const result = await Users.create({ userId, image, nickname, password });
         return result;
     };
 

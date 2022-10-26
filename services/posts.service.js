@@ -43,9 +43,10 @@ class PostService {
   };
 
   // 게시글 생성
-  createPost = async (id, nickname,title, content) => {
+  createPost = async (id, image, nickname, title, content) => {
     const createPostData = await this.postRepository.createPost(
       id,
+      image,
       nickname,
       title,
       content
@@ -55,6 +56,7 @@ class PostService {
       postId: createPostData.postId,
       id: createPostData.id,
       nickname: createPostData.nickname,
+      image: createPostData.image,
       title: createPostData.title,
       content: createPostData.content,
       totalLike:createPostData.totalLike,
@@ -65,18 +67,19 @@ class PostService {
 
 
   // 게시글 수정
-  updatePost = async (postId, nickname, title, content) => {
+  updatePost = async (postId, nickname, image, title, content) => {
     const findPost = await this.postRepository.findPostById(postId);
 
     if(!findPost){ return {data : '게시글이 존재하지 않습니다'}}
     if( nickname === findPost.nickname){
-    await this.postRepository.updatePost(postId, nickname, title, content);
+    await this.postRepository.updatePost(postId, nickname, image, title, content);
     
     const updatePost = await this.postRepository.findPostById(postId);
 
     return {
       postId: updatePost.postId,
       nickname: updatePost.nickname,
+      image: updatePost.image,
       title: updatePost.title,
       content: updatePost.content,
       totalLike:updatePost.totalLike,
@@ -114,6 +117,7 @@ class PostService {
                 postId: post.postId,
                 id: post.id,
                 nickname: post.nickname,
+                image: post.image,
                 title: post.title,
                 totalLike :post.totalLike,
                 createdAt: post.createdAt,
