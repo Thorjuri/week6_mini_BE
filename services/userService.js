@@ -58,7 +58,7 @@ class UserService {
         
         if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음
 
-        const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
+        const token = jwt.sign({ userId: loginData.userId, nickname: loginData.nickname }, process.env.SECRET_KEY);
         
         return {token:`Bearer ${ token }`, message: '로그인 성공'};  //토큰 발행
     };
