@@ -42,12 +42,12 @@ class PostRepository {
         return createPostData;
     };
 
-    createPostWithImg = async (id, userId, nickname, image, title, content) => {
+    createPostWithImg = async (id, userId, nickname, postPicture, title, content) => {
         const createPostData = await Posts.create({
             id,
             userId,
             nickname,
-            image,
+            postPicture,
             title,
             content,
         });

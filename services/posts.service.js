@@ -18,7 +18,7 @@ class PostService {
                 id: post.id,
                 userId: post.userId,
                 nickname: post.nickname,
-                image: post.image,
+                postPicture: post.postPicture,
                 title: post.title,
                 createdAt: post.createdAt,
                 updatedAt: post.updatedAt,
@@ -37,7 +37,7 @@ class PostService {
             id: findPost.id,
             userId: findPost.userId,
             nickname: findPost.nickname,
-            image: findPost.image,
+            postPicture: findPost.postPicture,
             title: findPost.title,
             content: findPost.content,
             totalLike: findPost.totalLike,
@@ -62,6 +62,7 @@ class PostService {
                 id: createPostData.id,
                 userId: createPostData.userId,
                 nickname: createPostData.nickname,
+                postPicture: null,
                 title: createPostData.title,
                 content: createPostData.content,
                 totalLike: createPostData.totalLike,
@@ -69,12 +70,12 @@ class PostService {
                 updatedAt: createPostData.updatedAt,
             };
         } else if (fileData) {
-            const image = fileData.location;
+            const postPicture = await fileData.location;
             const createPostData = await this.postRepository.createPostWithImg(
                 id,
                 userId,
                 nickname,
-                image,
+                postPicture,
                 title,
                 content
             );
@@ -84,7 +85,7 @@ class PostService {
                 id: createPostData.id,
                 userId: createPostData.userId,
                 nickname: createPostData.nickname,
-                image: createPostData.image,
+                postPicture: createPostData.postPicture,
                 title: createPostData.title,
                 content: createPostData.content,
                 totalLike: createPostData.totalLike,
@@ -118,7 +119,7 @@ class PostService {
                 id: updatePost.id,
                 userId: updatePost.userId,
                 nickname: updatePost.nickname,
-                image: updatePost.image,
+                postPicture: updatePost.postPicture,
                 title: updatePost.title,
                 content: updatePost.content,
                 totalLike: updatePost.totalLike,
@@ -156,7 +157,7 @@ class PostService {
                     id: post.id,
                     userId: post.userId,
                     nickname: post.nickname,
-                    image: post.image,
+                    postPicture: post.postPicture,
                     title: post.title,
                     totalLike: post.totalLike,
                     createdAt: post.createdAt,

@@ -31,6 +31,7 @@ class PostsController {
         const { id, userId, nickname } = res.locals.user;
         const { title, content } = req.body;
         const fileData = req.file;
+        console.log(fileData)
 
         try {
             const createPostData = await this.postService.createPost(

@@ -26,8 +26,8 @@ class UserService {
 
         } else if (fileData) {
             //프로필 사진 있으면
-            const image = fileData.location
-            const createUserData = await this.userRepository.createUserWithImg(userId, image, nickname, password);
+            const userPicture = fileData.location
+            const createUserData = await this.userRepository.createUserWithImg(userId, userPicture, nickname, password);
             return createUserData;
 
         } else {
