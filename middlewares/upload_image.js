@@ -7,15 +7,13 @@ require('dotenv').config;
 AWS.config.update({
     accessKeyId: process.env.AWS_ACCES_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: "ap-northeast-2"
+    region: process.env.AWS_BUCKET_REGION
 })
 
-//이미지 파일 업로드 위해서 upload라는 미들웨어 만들어주기
 const upload = multer({
     storage: multerS3({
         s3: new AWS.S3(),
-        bucket: "week6-project-bucket",
-        contentType: multerS3.AUTO_CONTENT_TYPE,
+        bucket: process.env.AWS_BUCKET_NAME,
         key(req, file, cb) {
             cb(null, `original/${Date.now()}_${file.originalname}`);
         },

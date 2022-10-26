@@ -7,27 +7,15 @@ class UserController {
     createUser = async(req, res, next) => {
         const { authorization } = req.headers;
         const { userId, nickname, password } = req.body;
-        const { image } = req.body
-        
-        console.log(image)
+        const image = req.file.location
+
         try{
-            const createUserData = await this.userService.createUser(authorization, userId, nickname, password);
+            const createUserData = await this.userService.createUser(authorization, image, userId, nickname, password);
             res.status(201).send(createUserData);
         }catch(error){
             res.status(400).json({error: error.message})
         }
     };
-
-    createUserToImg = async (req, res, next) => {
-        const image = req.file.location;
-
-        try{
-            const createUserProfileImg = await this.userService.createUserToImg(image)
-            res.status(201).json(createUserProfileImg)
-        } catch (err) {
-            res.status(401).json()
-        }
-    }
 
     duplicatedId = async(req, res, next)=> {
         const {userId} = req.body;

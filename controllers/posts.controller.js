@@ -31,13 +31,16 @@ class PostsController {
   
   // 게시글 작성
   createPost = async (req, res) => {
-    const {id, nickname} = res.locals.user;
+    const { id, nickname } = res.locals.user;
     const { title, content } = req.body;
+    const image = req.file.location;
+    
 
 
     try{
     const createPostData = await this.postService.createPost(
       id,
+      image,
       nickname,
       title,
       content
@@ -55,10 +58,11 @@ class PostsController {
     const { nickname } = res.locals.user;
     const { title, content } = req.body;
     const { postId } = req.params;
+    const image = req.file.loaction
 
 
     try{
-    const updatePost = await this.postService.updatePost(postId, nickname, title, content)
+    const updatePost = await this.postService.updatePost(postId, nickname, image, title, content)
     res.status(200).json(updatePost);
     }catch (error){
       res.status(404).json({error: error.message});
