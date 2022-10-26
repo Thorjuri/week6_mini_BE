@@ -5,7 +5,7 @@ const UserController = require('../controllers/userController');
 const userController = new UserController();
 
 const authMiddleware = require("../middlewares/auth_middleware");
-const user_validation = require('../validation/user_validation')
+// const user_validation = require('../validation/user_validation')
 
 
 // 1.회원가입 
@@ -21,7 +21,7 @@ router.post('/checkname', userController.duplicatedNickname);
 router.post('/login' ,userController.login);
 
 // 5. 마이페이지 (내 정보, 좋아요한 글)
-router.get('/:userId', authMiddleware, userController.getUser);
+router.get('/:userId', authMiddleware, userController.getUserPage);
 
 // 6. 유저 프로필 수정
 router.put('/:userId/update', authMiddleware, userController.updateUser);
