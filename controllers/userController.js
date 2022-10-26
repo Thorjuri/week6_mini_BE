@@ -4,44 +4,70 @@ class UserController {
     userService = new UserService();
 
 
-    createUser = async(req, res, next)=> {
+    createUser = async(req, res, next) => {
         const { authorization } = req.headers;
-        const {userId, nickname, password} = req.body;
-        const createUserData = await this.userService.createUser(authorization, userId, nickname, password);
-        res.status(201).send(createUserData);
+        const { userId, nickname, password } = req.body;
+        const image = req.file.location
+
+        try{
+            const createUserData = await this.userService.createUser(authorization, image, userId, nickname, password);
+            res.status(201).send(createUserData);
+        }catch(error){
+            res.status(400).json({error: error.message})
+        }
     };
 
     duplicatedId = async(req, res, next)=> {
         const {userId} = req.body;
-        const duplicatedIdData = await this.userService.duplicatedId(userId);
-        res.status(201).send(duplicatedIdData);
+        try{
+            const duplicatedIdData = await this.userService.duplicatedId(userId);
+            res.status(200).send(duplicatedIdData);
+        }catch(error){
+            res.status(400).json({error: error.message})
+        }
     };
 
     duplicatedNickname = async(req, res, next)=> {
         const {nickname} = req.body;
-        const duplicatedNicknameData = await this.userService.duplicatedNickname(nickname);
-        res.status(201).send(duplicatedNicknameData);
+        try{
+            const duplicatedNicknameData = await this.userService.duplicatedNickname(nickname);
+            res.status(201).send(duplicatedNicknameData);
+        }catch(error){
+            res.status(400).json({error: error.message})
+        };
     };
 
     login = async(req, res, next)=> {
         const { authorization } = req.headers;
         const { userId, password } = req.body;  
-        const loginData = await this.userService.login(authorization, userId, password);
-        res.header('Authorization',loginData.token)
-        res.status(201).send(loginData.message)
+        try{
+            const loginData = await this.userService.login(authorization, userId, password);
+            res.header('Authorization',loginData.token)
+            res.status(201).send(loginData.message)
+        }catch(error){
+            res.status(400).json({error: error.message})
+        };
     };
 
     getUserPage = async(req, res, next)=> {
         const {userId} = req.params
-        const getUserPageData = await this.userService.getUserPage(userId);
-        res.status(201).send(getUserPageData);
+        try{
+            const getUserPageData = await this.userService.getUserPage(userId);
+            res.status(201).send(getUserPageData);
+        }catch(error){
+            res.status(401).json({error: error.message});
+        };
     };
 
     updateUser = async(req, res, next)=> {
         const {userId} = req.params
         const {nickname, statusText} = req.body;
-        const updateUserData = await this.userService.updateUser(userId, nickname, statusText);
-        res.status(201).send(updateUserData);
+        try{
+            const updateUserData = await this.userService.updateUser(userId, nickname, statusText);
+            res.status(201).send(updateUserData);
+        }catch(error){
+            res.status(401).json({error: error.message});
+        };
     };
 };
 

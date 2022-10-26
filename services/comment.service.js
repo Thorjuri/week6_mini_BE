@@ -43,7 +43,7 @@ class CommentService {
       await this.commentRepository.updateCmt(comment, commentId, id);
       return '댓글을 수정하였습니다.';
     } else {
-      return '수정 권한이 없습니다';
+      throw new Error("수정 권한이 없습니다.");
     }
   };
 
@@ -56,7 +56,7 @@ class CommentService {
       await this.commentRepository.deleteCmt(commentId, id);
       return '댓글을 삭제하였습니다.';
     } else {
-      return '삭제 권한이 없습니다';
+      throw new Error("삭제 권한이 없습니다.");
     }
   };
 }
