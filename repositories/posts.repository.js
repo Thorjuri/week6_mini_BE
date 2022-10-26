@@ -12,9 +12,9 @@ class PostRepository {
 
     // 게시글 상제 정보
     findPostById = async (postId) => {
-        console.log(postId);
+        
         const post = await Posts.findOne({ where: { postId } });
-        console.log(post);
+        
         return post;
     };
 
@@ -30,10 +30,10 @@ class PostRepository {
     };
 
     // 게시글 생성
-    createPost = async (id, image, nickname, title, content) => {
+    createPost = async (id, userId, nickname, title, content) => {
         const createPostData = await Posts.create({
             id,
-            image,
+            userId,
             nickname,
             title,
             content,
@@ -42,10 +42,23 @@ class PostRepository {
         return createPostData;
     };
 
+    createPostWithImg = async (id, userId, nickname, image, title, content) => {
+        const createPostData = await Posts.create({
+            id,
+            userId,
+            nickname,
+            image,
+            title,
+            content,
+        });
+
+        return createPostData;
+    };
+
     // 게시글 수정
-    updatePost = async (postId, nickname, image, title, content) => {
+    updatePost = async (postId, nickname, title, content) => {
         const updatePostData = await Posts.update(
-            { image, title, content },
+            { title, content },
             { where: { postId, nickname } }
         );
 
@@ -70,8 +83,6 @@ class PostRepository {
         const likePostId = getLikeAll.map((post) => {
             return post.getDataValue('postId');
         });
-
-        console.log(likePostId);
 
         const getLikePostsAll = await Posts.findAll({
             where: { postId: likePostId },

@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         },
         onDelete: 'cascade',
     },
+    userId:{
+      type: DataTypes.STRING,
+      allowNull: false
+    },
     nickname: {
       type: DataTypes.STRING,
       allowNull: false

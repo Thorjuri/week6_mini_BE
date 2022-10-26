@@ -12,8 +12,8 @@ router.get('/like', authMiddleware, postsController.getLikePosts)
 
 router.get("/list", postsController.getPosts);
 router.get("/:postId", postsController.getPostById);
-router.post("/write", authMiddleware, upload.single('image'), postsController.createPost);
-router.put("/:postId", authMiddleware, upload.single('image'), postsController.updatePost);
+router.post("/write", authMiddleware, upload.single('postPicture'), postsController.createPost);
+router.put("/:postId", authMiddleware, postsController.updatePost);
 router.delete("/:postId", authMiddleware, postsController.deletePost);
 // router.get("/like", authMiddleware, postsController.getLikedPosts);
 

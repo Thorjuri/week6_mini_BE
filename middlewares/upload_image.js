@@ -14,11 +14,12 @@ const upload = multer({
     storage: multerS3({
         s3: new AWS.S3(),
         bucket: process.env.AWS_BUCKET_NAME,
+        contentType: multerS3.AUTO_CONTENT_TYPE,
         key(req, file, cb) {
             cb(null, `original/${Date.now()}_${file.originalname}`);
         },
     }),
-    limits: { fileSize: 20 * 1024 * 1024},
+    limits: { fileSize: 10 * 1024 * 1024},
 });
 
 module.exports = upload;

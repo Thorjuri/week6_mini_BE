@@ -13,16 +13,26 @@ class UserService {
       };
 
 
-    createUser = async(authorization, image, userId, nickname, password) => {
+    createUser = async(authorization, fileData, userId, nickname, password) => {
         const status = await this.excptLogin(authorization); 
             
         if(status){ throw new Error('이미 로그인 되어 있습니다.')}; //예외처리. 이미 로그인 된 상태
         if(!userId || !nickname || !password){ throw new Error('필수 정보를 모두 입력해주세요')};  //예외처리. 공란
 
+        if(!fileData) {
+            //프로필 사진 없으면
+            const createUserData = await this.userRepository.createUser(userId, nickname, password);
+            return createUserData;
 
-        const createUserData = await this.userRepository.createUser(userId, image, nickname, password);
+        } else if (fileData) {
+            //프로필 사진 있으면
+            const image = fileData.location
+            const createUserData = await this.userRepository.createUserWithImg(userId, image, nickname, password);
+            return createUserData;
 
-        return createUserData;
+        } else {
+            throw new Error ('회원가입에 실패하였습니다.')
+        }
     };
 
 
@@ -58,9 +68,9 @@ class UserService {
         
         if (!loginData){ throw new Error ('일치하는 회원정보가 없습니다. ')}; //예외처리. 일치 정보 없음
 
-        const token = jwt.sign({ userId: loginData.userId }, process.env.SECRET_KEY);
+        const token = jwt.sign({ userId: loginData.userId, nickname: loginData.nickname }, process.env.SECRET_KEY);
         
-        return {token:`Bearer ${ token }`, message: '로그인 성공'};  //토큰 발행
+        return {token:`Bearer ${ token }`, userId: loginData.userId, nickname: loginData.nickname, message: '로그인 성공'};  //토큰 발행
     };
 
 

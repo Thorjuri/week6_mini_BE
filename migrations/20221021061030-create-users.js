@@ -25,7 +25,7 @@ module.exports = {
       },
       image: {
         type: Sequelize.STRING,
-        allowNull: true
+        allowNull: true,
       },
       statusText: {
         type: Sequelize.STRING,

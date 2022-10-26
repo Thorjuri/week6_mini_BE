@@ -10,7 +10,7 @@ const authMiddleware = require("../middlewares/auth_middleware");
 
 
 // 1.회원가입 
-router.post('/signup', upload.single('image'), userController.createUser)
+router.post('/signup', upload.single('userPicture'), userController.createUser)
 
 // 2. 회원가입 - 아이디 중복확인
 router.post('/checkId', userController.duplicatedId);
